@@ -2,7 +2,6 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-
 public class ProductBasket {
     private final Product[] basket = new Product[5];
     private int size = 0;
@@ -29,23 +28,11 @@ public class ProductBasket {
             System.out.println("В корзине пусто.");
             return;
         }
-
-
-            int specialCount = 0;
-            for (int i = 0; i < size; i++) {
-                Product product = basket[i];
-                System.out.println(product);
-                if (product.isSpecial()) {
-                    specialCount++;
-                }
-            }
-
-            System.out.println("Итого: " + getTotalPrice());
-            System.out.println("Специальных товаров: " + specialCount);
+        for (int i = 0; i < size; i++) {
+            System.out.println(basket[i].getName() + ": " + basket[i].getPrice());
         }
-
-
-
+        System.out.println("Итого: " + getTotalPrice());
+    }
 
     public boolean hasProduct(String name) {
         for (int i = 0; i < size; i++) {
