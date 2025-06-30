@@ -8,6 +8,7 @@ import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
+import org.skypro.skyshop.exception.BestResultNotFound;
 
 public class App {
     public static void main(String[] args) {
@@ -19,6 +20,29 @@ public class App {
         Product cheese = new SimpleProduct("Сыр", 120);
         Product butter = new DiscountedProduct("Масло", 90, 15);
         Product chocolate = new SimpleProduct("Шоколад", 130);
+        try {
+            Product p1 = new SimpleProduct("  ", 100);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product p2 = new SimpleProduct("Рис", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product p3 = new DiscountedProduct("Сок", 90, 150);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        try {
+            Product p4 = new DiscountedProduct(null, 90, 10);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
 
         basket.addProduct(apple);
         basket.addProduct(bread);
@@ -76,6 +100,21 @@ public class App {
             if (result != null) {
                 System.out.println(result.getStringRepresentation());
             }
+        }
+        System.out.println("\nПоиск самого подходящего результата для 'молоко':");
+        try {
+            Searchable best = searchEngine.findBestMatch("молоко");
+            System.out.println("Лучший результат: " + best.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        System.out.println("\nПоиск самого подходящего результата для 'пельмени':");
+        try {
+            Searchable best = searchEngine.findBestMatch("пельмени");
+            System.out.println("Лучший результат: " + best.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
     }
 }
