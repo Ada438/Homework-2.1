@@ -8,7 +8,9 @@ import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
-import org.skypro.skyshop.exception.BestResultNotFound;
+
+import java.util.List;
+
 
 public class App {
     public static void main(String[] args) {
@@ -44,13 +46,14 @@ public class App {
             System.out.println("Ошибка: " + e.getMessage());
         }
 
-        basket.addProduct(apple);
-        basket.addProduct(bread);
-        basket.addProduct(milk);
-        basket.addProduct(cheese);
-        basket.addProduct(butter);
-        basket.addProduct(chocolate);
+        basket.add(apple);
+        basket.add(bread);
+        basket.add(milk);
+        basket.add(cheese);
+        basket.add(butter);
+        basket.add(chocolate);
 
+        System.out.println("Первичное содержимое корзины:");
         basket.printBasket();
 
         System.out.println("Общая стоимость: " + basket.getTotalPrice());
@@ -58,13 +61,34 @@ public class App {
         System.out.println("Есть ли Хлеб в корзине? " + basket.hasProduct("Хлеб"));
         System.out.println("Есть ли Сникерс в корзине? " + basket.hasProduct("Сникерс"));
 
-        basket.clear();
 
-        System.out.println("После очистки корзины:");
+        System.out.println("\nУдаление продуктов с именем 'Молоко':");
+        List<Product> removedMilk = basket.removeByName("Молоко");
+        if (removedMilk.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            for (Product product : removedMilk) {
+                System.out.println("Удалён: " + product.getName());
+            }
+        }
+
+        System.out.println("Содержимое корзины после удаления 'Молоко':");
         basket.printBasket();
-        System.out.println("Общая стоимость: " + basket.getTotalPrice());
 
-        SearchEngine searchEngine = new SearchEngine(20);
+        System.out.println("\nУдаление продуктов с именем 'Колбаса':");
+        List<Product> removedSausage = basket.removeByName("Колбаса");
+        if (removedSausage.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            for (Product product : removedSausage) {
+                System.out.println("Удалён: " + product.getName());
+            }
+        }
+
+        System.out.println("Содержимое корзины после удаления 'Колбаса':");
+        basket.printBasket();
+
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(apple);
         searchEngine.add(bread);
@@ -81,40 +105,35 @@ public class App {
         searchEngine.add(article2);
         searchEngine.add(article3);
 
-        System.out.println("\nРезультаты поиска по слову 'хлеб':");
-        for (Searchable result : searchEngine.search("хлеб")) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
-            }
-        }
-
         System.out.println("\nРезультаты поиска по слову 'молоко':");
-        for (Searchable result : searchEngine.search("молоко")) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
+        List<Searchable> searchResults = searchEngine.search("молоко");
+        if (searchResults.isEmpty()) {
+            System.out.println("Ничего не найдено.");
+        } else {
+            for (Searchable item : searchResults) {
+                System.out.println(item.getStringRepresentation());
             }
-        }
 
-        System.out.println("\nРезультаты поиска по слову 'сыр':");
-        for (Searchable result : searchEngine.search("сыр")) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
+            System.out.println("\nРезультаты поиска по слову 'хлеб':");
+            for (Searchable result : searchEngine.search("хлеб")) {
+                if (result != null) {
+                    System.out.println(result.getStringRepresentation());
+                }
             }
-        }
-        System.out.println("\nПоиск самого подходящего результата для 'молоко':");
-        try {
-            Searchable best = searchEngine.findBestMatch("молоко");
-            System.out.println("Лучший результат: " + best.getStringRepresentation());
-        } catch (BestResultNotFound e) {
-            System.out.println("Ошибка: " + e.getMessage());
-        }
 
-        System.out.println("\nПоиск самого подходящего результата для 'пельмени':");
-        try {
-            Searchable best = searchEngine.findBestMatch("пельмени");
-            System.out.println("Лучший результат: " + best.getStringRepresentation());
-        } catch (BestResultNotFound e) {
-            System.out.println("Ошибка: " + e.getMessage());
+
+            System.out.println("\nРезультаты поиска по слову 'сыр':");
+            for (Searchable result : searchEngine.search("сыр")) {
+                if (result != null) {
+                    System.out.println(result.getStringRepresentation());
+                }
+            }
+            basket.clear();
+
+            System.out.println("После очистки корзины:");
+            basket.printBasket();
+            System.out.println("Общая стоимость: " + basket.getTotalPrice());
+
         }
     }
 }
