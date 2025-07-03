@@ -10,6 +10,7 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class App {
@@ -106,29 +107,28 @@ public class App {
         searchEngine.add(article3);
 
         System.out.println("\nРезультаты поиска по слову 'молоко':");
-        List<Searchable> searchResults = searchEngine.search("молоко");
-        if (searchResults.isEmpty()) {
+        Map<String, Searchable> milkResults = searchEngine.search("молоко");
+        if (milkResults.isEmpty()) {
             System.out.println("Ничего не найдено.");
         } else {
-            for (Searchable item : searchResults) {
-                System.out.println(item.getStringRepresentation());
+            for (Searchable result : milkResults.values()) {
+                System.out.println(result.getStringRepresentation());
             }
+        }
 
-            System.out.println("\nРезультаты поиска по слову 'хлеб':");
-            for (Searchable result : searchEngine.search("хлеб")) {
-                if (result != null) {
-                    System.out.println(result.getStringRepresentation());
-                }
-            }
+        System.out.println("\nРезультаты поиска по слову 'хлеб':");
+        Map<String, Searchable> breadResults = searchEngine.search("хлеб");
+        for (Searchable result : breadResults.values()) {
+            System.out.println(result.getStringRepresentation());
+        }
 
+        System.out.println("\nРезультаты поиска по слову 'сыр':");
+        Map<String, Searchable> cheeseResults = searchEngine.search("сыр");
+        for (Searchable result : cheeseResults.values()) {
+            System.out.println(result.getStringRepresentation());
+        }
 
-            System.out.println("\nРезультаты поиска по слову 'сыр':");
-            for (Searchable result : searchEngine.search("сыр")) {
-                if (result != null) {
-                    System.out.println(result.getStringRepresentation());
-                }
-            }
-            basket.clear();
+        basket.clear();
 
             System.out.println("После очистки корзины:");
             basket.printBasket();
@@ -136,6 +136,5 @@ public class App {
 
         }
     }
-}
 
 

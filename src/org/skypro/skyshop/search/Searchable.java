@@ -10,6 +10,10 @@ public interface Searchable {
     default String getStringRepresentation() {
         return getName() + " — тип " + getType();
     }
+
+    default boolean matches(String text) {
+        return getSearchTerm().toLowerCase().contains(text.toLowerCase());
+    }
 }
 
 
