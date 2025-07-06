@@ -47,12 +47,12 @@ public class App {
             System.out.println("Ошибка: " + e.getMessage());
         }
 
-        basket.add(apple);
-        basket.add(bread);
-        basket.add(milk);
-        basket.add(cheese);
-        basket.add(butter);
-        basket.add(chocolate);
+        basket.addProduct(apple);
+        basket.addProduct(bread);
+        basket.addProduct(milk);
+        basket.addProduct(cheese);
+        basket.addProduct(butter);
+        basket.addProduct(chocolate);
 
         System.out.println("Первичное содержимое корзины:");
         basket.printBasket();
